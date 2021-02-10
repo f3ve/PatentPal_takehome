@@ -1,22 +1,37 @@
 <template>
   <div id="app">
-    <nav id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> | 
-      <router-link to="/newpage">New Page</router-link>
-    </nav>
+    <topbar />
     <router-view/>
   </div>
 </template>
 
+<script>
+import Topbar from './components/topbar.vue';
+export default {
+  name: "App",
+  components: {
+    Topbar
+  }
+}
+</script>
+
 <style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
+
 
 #nav {
   padding: 30px;
