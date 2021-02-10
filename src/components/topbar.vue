@@ -1,19 +1,17 @@
 <template>
-  <div class="topbar">
+  <header class="topbar">
     <router-link to="/">
       <img src="../assets/PatentPal_Logo.png" alt="PatentPal logo" class="mainLogo">
     </router-link>
     <mq-layout mq="md+">
       <nav id="nav">
-        <router-link to="/">Home</router-link> | 
-        <router-link to="/about">About</router-link> | 
-        <router-link to="/newpage">New Page</router-link>
+        <router-link to="/draft">Draft</router-link>
       </nav>
     </mq-layout>
     <mq-layout mq="sm">
       <font-awesome-icon icon="bars" class="hamburger" @click="click"></font-awesome-icon>
     </mq-layout>
-  </div>
+  </header>
 </template>
 
 <script>
@@ -28,7 +26,7 @@ export default {
 </script>
 
 <style scoped>
-  div.topbar {
+  header.topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
