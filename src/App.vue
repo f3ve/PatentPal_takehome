@@ -23,6 +23,7 @@ export default {
 body {
   padding: 0;
   margin: 0;
+  font-size: 20px;
 }
 
 #app {
