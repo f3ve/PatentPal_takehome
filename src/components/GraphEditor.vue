@@ -1,26 +1,31 @@
 <template>
-  <div>
-    <draggable>
-      <div :key="1">
-        <h1>Draggable section</h1>
-        <draggable>
-          <p :key="'child1'">Child 1</p>
-          <p :key="'child2'" >Child 2</p>
-          <p :key="'child3'">Child 3</p>
-        </draggable>
+  <vue-nestable v-model="store.nodes">
+    <vue-nestable-handle slot-scope="{ item }" :item="item">
+      <div>
+        <input v-model="item.text" v-on:keypress.enter.prevent="addNode"/>
       </div>
-      <h2 :key="2">Drag me</h2>
-    </draggable>
-  </div>
+    </vue-nestable-handle>
+  </vue-nestable>
 </template>
 
 <script>
-import draggable from 'vuedraggable'
+import store from '../../store'
+import {VueNestable, VueNestableHandle} from 'vue-nestable'
+
 
 export default {
   name: 'GraphEditor',
   components: {
-    draggable
-  }
+    VueNestable,
+    VueNestableHandle
+  },
+  methods: {
+    addNode() {
+      console.log('yeet')
+    }
+  },
+  data: () => ({
+    store
+  }),
 }
 </script>
