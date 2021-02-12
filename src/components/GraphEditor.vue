@@ -159,7 +159,7 @@ export default {
       }
 
       /* 
-        if node is a child with no children and no siblings, and parent 
+        if node is a child with no children and no siblings below, and parent 
         has a sibling node, target parent's sibling node.
       */
       if (
