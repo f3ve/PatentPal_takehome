@@ -1,9 +1,6 @@
 <template>
   <div>
-    <font-awesome-icon
-      :icon="node.children.length < 1 ? 'circle' : 'caret-down'"
-      :class="node.children.length < 1 ? 'circle' : 'caret-down'"
-    />
+    <font-awesome-icon :icon="renderClass" :class="renderClass" />
     <input
       v-model="node.text"
       type="text"
@@ -44,12 +41,6 @@ import { v4 as uuid } from 'uuid';
 
 export default {
   name: 'GraphEditor',
-  updated: function() {
-    if (this.focusId) {
-      document.getElementById(this.focusId).focus();
-      this.focusId = null;
-    }
-  },
   components: {
     draggable,
   },
@@ -67,7 +58,16 @@ export default {
     focusId: function(val) {
       if (val) {
         document.getElementById(val).focus();
+        this.focusId = null;
       }
+    },
+  },
+  computed: {
+    renderClass: function() {
+      if (this.node.children.length < 1) {
+        return 'circle';
+      }
+      return 'caret-down';
     },
   },
   methods: {
