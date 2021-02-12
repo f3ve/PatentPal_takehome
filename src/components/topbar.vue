@@ -43,7 +43,6 @@ header.topbar {
 }
 
 img.mainLogo {
-  width: 100%;
   max-height: 40px;
 }
 
