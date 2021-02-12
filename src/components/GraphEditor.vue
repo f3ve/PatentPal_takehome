@@ -156,13 +156,11 @@ export default {
       const { children } = node;
 
       if (children.length > 0) {
-        console.log('ran 1');
         document.getElementById(children[0].id).focus();
         return;
       }
 
       if (children.length === 0 && arr.length > index + 1) {
-        console.log('ran 2');
         document.getElementById(arr[index + 1].id).focus();
         return;
       }
@@ -172,7 +170,6 @@ export default {
         parIndex !== null &&
         parArr.length > parIndex + 1
       ) {
-        console.log('ran 3');
         document.getElementById(parArr[parIndex + 1].id).focus();
         return;
       }
