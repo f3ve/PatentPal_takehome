@@ -96,7 +96,7 @@ export default {
         // sets focusId to target newly created node
         this.focusId = newNode.id;
 
-        // using splice to insert as next index array
+        // using splice to insert new node as next index in array
         arr.splice(index + 1, 0, newNode);
       }
     },
