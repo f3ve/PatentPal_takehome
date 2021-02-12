@@ -19,7 +19,6 @@
         v-on:keydown.up="
           handleUp({
             e: $event,
-            node,
             arr: store.nodes,
             index: nodeIndex,
           })
@@ -63,7 +62,6 @@
             v-on:keydown.up="
               handleUp({
                 e: $event,
-                node: child,
                 arr: node.children,
                 index: childIndex,
                 parArr: store.nodes,
@@ -133,16 +131,29 @@ export default {
         document.getElementById(arr[index - 1].id).focus();
       }
     },
-    handleUp({ e, node, index, arr, parArr = [], parIndex = null }) {
+    handleUp({ e, index, arr, parArr = [], parIndex = null }) {
       e.preventDefault();
-      console.log('up', e, node, index, arr, parArr, parIndex);
+
+      const nodeUp = arr[index - 1];
+
+      if (nodeUp && nodeUp.children.length === 0) {
+        document.getElementById(nodeUp.id).focus();
+        return;
+      }
+
+      if (nodeUp && nodeUp.children.length > 0) {
+        document.getElementById(nodeUp.children[0].id).focus();
+        return;
+      }
+
+      if (!nodeUp && parIndex !== null) {
+        document.getElementById(parArr[parIndex].id).focus();
+        return;
+      }
     },
     handleDown({ e, node, index, arr, parArr = [], parIndex = null }) {
       e.preventDefault();
       const { children } = node;
-
-      console.log(parArr.length, parIndex);
-      console.log(parArr.length > parIndex + 1);
 
       if (children.length > 0) {
         console.log('ran 1');
