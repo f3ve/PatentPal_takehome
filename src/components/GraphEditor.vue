@@ -1,95 +1,46 @@
 <template>
-  <draggable
-    v-model="store.nodes"
-    draggable=".item"
-    group="nodes"
-    @change="focusId = null"
-  >
-    <div v-for="(node, nodeIndex) in store.nodes" :key="node.id" class="item">
-      <font-awesome-icon
-        :icon="node.children.length < 1 ? 'circle' : 'caret-down'"
-        :class="node.children.length < 1 ? 'circle' : 'caret-down'"
-      />
-      <input
-        v-model="node.text"
-        type="text"
-        class="nodeInput"
-        v-on:keydown.delete="removeNode($event, nodeIndex, store.nodes)"
-        v-on:keypress.enter="addNewNode($event, store.nodes, nodeIndex)"
-        v-on:keydown.up="
-          handleUp({
-            e: $event,
-            arr: store.nodes,
-            index: nodeIndex,
-          })
-        "
-        v-on:keydown.down="
-          handleDown({
-            e: $event,
-            node,
-            arr: store.nodes,
-            index: nodeIndex,
-          })
-        "
-        ref="node"
-        :id="node.id"
-      />
-      <draggable
-        v-model="node.children"
-        draggable=".child"
-        group="nodes"
-        class="childContainer"
-        @change="focusId = null"
+  <div>
+    <font-awesome-icon
+      :icon="node.children.length < 1 ? 'circle' : 'caret-down'"
+      :class="node.children.length < 1 ? 'circle' : 'caret-down'"
+    />
+    <input
+      v-model="node.text"
+      type="text"
+      class="nodeInput"
+      v-on:keydown.delete="removeNode"
+      v-on:keypress.enter="addNewNode"
+      v-on:keydown.up="handleUp"
+      v-on:keydown.down="handleDown"
+      :id="node.id"
+    />
+    <draggable
+      v-model="node.children"
+      draggable=".child"
+      group="nodes"
+      class="childContainer"
+      @change="focusId = null"
+    >
+      <div
+        v-for="(child, childIndex) in node.children"
+        :key="child.id"
+        class="child"
       >
-        <div
-          v-for="(child, childIndex) in node.children"
-          :key="child.id"
-          class="child"
-        >
-          <font-awesome-icon
-            :icon="child.children.length < 1 ? 'circle' : 'caret-down'"
-            :class="child.children.length < 1 ? 'circle' : 'caret-down'"
-          />
-          <input
-            type="text"
-            v-model="child.text"
-            class="nodeInput"
-            v-on:keydown.delete="removeNode($event, childIndex, node.children)"
-            v-on:keypress.enter="
-              addNewNode($event, node.children, childIndex, node.id)
-            "
-            ref="child"
-            v-on:keydown.up="
-              handleUp({
-                e: $event,
-                arr: node.children,
-                index: childIndex,
-                parArr: store.nodes,
-                parIndex: nodeIndex,
-              })
-            "
-            v-on:keydown.down="
-              handleDown({
-                e: $event,
-                node: child,
-                arr: node.children,
-                index: childIndex,
-                parArr: store.nodes,
-                parIndex: nodeIndex,
-              })
-            "
-            :id="child.id"
-          />
-        </div>
-      </draggable>
-    </div>
-  </draggable>
+        <GraphEditor
+          v-bind:node="child"
+          v-bind:index="childIndex"
+          v-bind:arr="node.children"
+          v-bind:parArr="arr"
+          v-bind:parIndex="index"
+        />
+      </div>
+    </draggable>
+  </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable';
 import { v4 as uuid } from 'uuid';
-import store from '../../store';
 
 export default {
   name: 'GraphEditor',
@@ -102,12 +53,27 @@ export default {
   components: {
     draggable,
   },
+  props: {
+    node: Object,
+    index: Number,
+    arr: Array,
+    parArr: Array,
+    parIndex: Number,
+  },
   data: () => ({
-    store,
     focusId: null,
   }),
+  watch: {
+    focusId: function(val) {
+      if (val) {
+        document.getElementById(val).focus();
+      }
+    },
+  },
   methods: {
-    addNewNode(e, arr, index, parId = null) {
+    addNewNode(e) {
+      const { arr, index } = this;
+      const parId = this.parArr[this.parIndex].id;
       if (e.target.value.length > 0) {
         const newNode = {
           id: uuid(),
@@ -123,16 +89,19 @@ export default {
         arr.splice(index + 1, 0, newNode);
       }
     },
-    removeNode(e, index, arr) {
+    removeNode(e) {
+      const { index, arr } = this;
       if (e.target.value.length < 1 || e.key === 'Delete') {
+        console.log('remove');
         e.preventDefault();
         console.log(index, arr);
         arr.splice(index, 1);
         document.getElementById(arr[index - 1].id).focus();
       }
     },
-    handleUp({ e, index, arr, parArr = [], parIndex = null }) {
+    handleUp(e) {
       e.preventDefault();
+      const { index, arr, parArr, parIndex } = this;
 
       const nodeUp = arr[index - 1];
 
@@ -151,16 +120,24 @@ export default {
         return;
       }
     },
-    handleDown({ e, node, index, arr, parArr = [], parIndex = null }) {
+    handleDown(e) {
       e.preventDefault();
-      const { children } = node;
+      const {
+        node: { children },
+        arr,
+        index,
+        parIndex,
+        parArr,
+      } = this;
 
       if (children.length > 0) {
+        console.log('ran 1');
         document.getElementById(children[0].id).focus();
         return;
       }
 
       if (children.length === 0 && arr.length > index + 1) {
+        console.log('ran 2');
         document.getElementById(arr[index + 1].id).focus();
         return;
       }
@@ -170,6 +147,8 @@ export default {
         parIndex !== null &&
         parArr.length > parIndex + 1
       ) {
+        console.log('ran 3');
+        console.log(parArr[parIndex + 1].id);
         document.getElementById(parArr[parIndex + 1].id).focus();
         return;
       }
