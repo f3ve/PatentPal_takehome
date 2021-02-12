@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import GraphEditor from '../components/GraphEditor'
+import GraphEditor from '../components/GraphEditor';
 
 export default {
   name: 'Draft',
   components: {
     GraphEditor,
-  }
-}
+  },
+};
 </script>
