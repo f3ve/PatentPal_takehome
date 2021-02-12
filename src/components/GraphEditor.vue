@@ -46,11 +46,11 @@ export default {
     draggable,
   },
   props: {
-    node: Object,
-    index: Number,
-    arr: Array,
-    parArr: Array,
-    parIndex: Number,
+    node: Object, // current node
+    index: Number, // node index
+    arr: Array, // array containing node
+    parArr: Array, // array containing parent
+    parIndex: Number, // parent index
   },
   data: () => ({
     focusId: null,
@@ -69,7 +69,7 @@ export default {
   computed: {
     renderClass: function() {
       /* 
-        simple function that determines if a node is a parent or not
+        simple function that determines if a circle or caret should be rendered
       */
       if (this.node.children.length < 1) {
         return 'circle';
@@ -80,7 +80,7 @@ export default {
   methods: {
     addNewNode(e) {
       const { arr, index } = this;
-      const parId = this.parArr[this.parIndex].id; // need parent id to assign to new node
+      const parId = this.parArr[this.parIndex].id; // parent id to assign to new node
 
       // if length of current input is greater than 0 creates new node
       if (e.target.value.length > 0) {
