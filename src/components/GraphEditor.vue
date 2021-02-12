@@ -130,7 +130,7 @@ export default {
         return;
       }
 
-      // if current node is a child and it does not have a sibling node above target parent
+      // if current node is a child and it does not have a sibling node above, target parent
       if (!nodeUp && parIndex !== null) {
         document.getElementById(parArr[parIndex].id).focus();
         return;
@@ -146,21 +146,21 @@ export default {
         parArr,
       } = this;
 
-      // if length of children is greater than 0 target first child
+      // if length of children is greater than 0, target first child
       if (children.length > 0) {
         document.getElementById(children[0].id).focus();
         return;
       }
 
-      // if no children and there is a node below target next node
+      // if no children and there is a node below, target next node
       if (children.length === 0 && arr.length > index + 1) {
         document.getElementById(arr[index + 1].id).focus();
         return;
       }
 
       /* 
-        if no children and no sibling node and there is a sibling node to 
-        parent, target parent's sibling node 
+        if node is a child with no children and no siblings, and parent 
+        has a sibling node, target parent's sibling node.
       */
       if (
         children.length === 0 &&
