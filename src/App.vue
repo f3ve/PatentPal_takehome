@@ -1,18 +1,18 @@
 <template>
   <div id="app">
     <topbar />
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
 import Topbar from './components/topbar.vue';
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    Topbar
-  }
-}
+    Topbar,
+  },
+};
 </script>
 
 <style>
@@ -32,7 +32,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-
 
 #nav {
   padding: 30px;

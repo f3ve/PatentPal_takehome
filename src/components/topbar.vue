@@ -1,7 +1,11 @@
 <template>
   <header class="topbar">
     <router-link to="/">
-      <img src="../assets/PatentPal_Logo.png" alt="PatentPal logo" class="mainLogo">
+      <img
+        src="../assets/PatentPal_Logo.png"
+        alt="PatentPal logo"
+        class="mainLogo"
+      />
     </router-link>
     <mq-layout mq="md+">
       <nav id="nav">
@@ -9,51 +13,55 @@
       </nav>
     </mq-layout>
     <mq-layout mq="sm">
-      <font-awesome-icon icon="bars" class="hamburger" @click="click"></font-awesome-icon>
+      <font-awesome-icon
+        icon="bars"
+        class="hamburger"
+        @click="click"
+      ></font-awesome-icon>
     </mq-layout>
   </header>
 </template>
 
 <script>
 export default {
-  name: "Topbar",
+  name: 'Topbar',
   methods: {
     click: () => {
-      console.log('clicked')
-    }
-  }
-}
+      console.log('clicked');
+    },
+  },
+};
 </script>
 
 <style scoped>
-  header.topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-    padding: 30px
-  }
-
-  img.mainLogo {
-    width: 100%;
-    max-height: 40px;
-  }
-
-  #nav {
+header.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
   padding: 30px;
 }
 
-  #nav a {
-    font-weight: bold;
-    color: #2c3e50;
-  }
+img.mainLogo {
+  width: 100%;
+  max-height: 40px;
+}
 
-  #nav a.router-link-exact-active {
-    color: #e04c4c;
-  }
+#nav {
+  padding: 30px;
+}
 
-  .hamburger {
-    color: #e04c4c;
-    font-size: 20px;
-  }
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #e04c4c;
+}
+
+.hamburger {
+  color: #e04c4c;
+  font-size: 20px;
+}
 </style>
