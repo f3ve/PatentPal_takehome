@@ -53,7 +53,7 @@ export default {
     parIndex: Number, // parent index
   },
   data: () => ({
-    focusId: null,
+    focusId: null, // id used for targeting newly created nodes
   }),
   watch: {
     focusId: function(val) {
