@@ -23,6 +23,7 @@
         :key="child.id"
         class="child"
       >
+        <!-- Using recursion to render children of node -->
         <GraphEditor
           v-bind:node="child"
           v-bind:index="childIndex"
@@ -56,6 +57,9 @@ export default {
   }),
   watch: {
     focusId: function(val) {
+      /* 
+        focuses newly created nodes
+      */
       if (val) {
         document.getElementById(val).focus();
         this.focusId = null;
@@ -64,6 +68,9 @@ export default {
   },
   computed: {
     renderClass: function() {
+      /* 
+        simple function that determins if a node is a parent or not
+      */
       if (this.node.children.length < 1) {
         return 'circle';
       }
@@ -73,7 +80,9 @@ export default {
   methods: {
     addNewNode(e) {
       const { arr, index } = this;
-      const parId = this.parArr[this.parIndex].id;
+      const parId = this.parArr[this.parIndex].id; // need parent id to assign to new node
+
+      // if length of current input is greater than 0 creates new node
       if (e.target.value.length > 0) {
         const newNode = {
           id: uuid(),
@@ -84,37 +93,44 @@ export default {
           children: [],
         };
 
+        // set focusId inorder to target newly created node
         this.focusId = newNode.id;
 
+        // using splice to insert as next index array
         arr.splice(index + 1, 0, newNode);
       }
     },
     removeNode(e) {
       const { index, arr } = this;
+
+      // if current input lenght is less than 1 or "Delete" key is press removes node
       if (e.target.value.length < 1 || e.key === 'Delete') {
-        console.log('remove');
         e.preventDefault();
-        console.log(index, arr);
         arr.splice(index, 1);
         document.getElementById(arr[index - 1].id).focus();
       }
     },
     handleUp(e) {
       e.preventDefault();
-      const { index, arr, parArr, parIndex } = this;
 
+      const { index, arr, parArr, parIndex } = this;
       const nodeUp = arr[index - 1];
 
+      // if there is a node above current node with no children target that node
       if (nodeUp && nodeUp.children.length === 0) {
         document.getElementById(nodeUp.id).focus();
         return;
       }
 
+      // if there is a node with children target it's last child
       if (nodeUp && nodeUp.children.length > 0) {
-        document.getElementById(nodeUp.children[0].id).focus();
+        document
+          .getElementById(nodeUp.children[nodeUp.children.length - 1].id)
+          .focus();
         return;
       }
 
+      // if current node is a child and it does not have a sibling node above target parent
       if (!nodeUp && parIndex !== null) {
         document.getElementById(parArr[parIndex].id).focus();
         return;
@@ -130,24 +146,27 @@ export default {
         parArr,
       } = this;
 
+      // if length of children is greater than 0 target first child
       if (children.length > 0) {
-        console.log('ran 1');
         document.getElementById(children[0].id).focus();
         return;
       }
 
+      // if no children and there is a node below target next node
       if (children.length === 0 && arr.length > index + 1) {
-        console.log('ran 2');
         document.getElementById(arr[index + 1].id).focus();
         return;
       }
 
+      /* 
+        if no children and no siblinging node and there is a sibling node to 
+        parent taget parent sibling node 
+      */
       if (
         children.length === 0 &&
         parIndex !== null &&
         parArr.length > parIndex + 1
       ) {
-        console.log('ran 3');
         console.log(parArr[parIndex + 1].id);
         document.getElementById(parArr[parIndex + 1].id).focus();
         return;
