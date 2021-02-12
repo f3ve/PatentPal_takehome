@@ -14,7 +14,24 @@
         v-model="node.text"
         type="text"
         class="nodeInput"
-        v-on:keypress.enter="addNewNode(store.nodes, nodeIndex)"
+        v-on:keydown.delete="removeNode($event, nodeIndex, store.nodes)"
+        v-on:keypress.enter="addNewNode($event, store.nodes, nodeIndex)"
+        v-on:keydown.up="
+          handleUp({
+            e: $event,
+            node,
+            arr: store.nodes,
+            index: nodeIndex,
+          })
+        "
+        v-on:keydown.down="
+          handleDown({
+            e: $event,
+            node,
+            arr: store.nodes,
+            index: nodeIndex,
+          })
+        "
         ref="node"
         :id="node.id"
       />
@@ -38,8 +55,31 @@
             type="text"
             v-model="child.text"
             class="nodeInput"
-            v-on:keypress.enter="addNewNode(node.children, childIndex, node.id)"
+            v-on:keydown.delete="removeNode($event, childIndex, node.children)"
+            v-on:keypress.enter="
+              addNewNode($event, node.children, childIndex, node.id)
+            "
             ref="child"
+            v-on:keydown.up="
+              handleUp({
+                e: $event,
+                node: child,
+                arr: node.children,
+                index: childIndex,
+                parArr: store.nodes,
+                parIndex: nodeIndex,
+              })
+            "
+            v-on:keydown.down="
+              handleDown({
+                e: $event,
+                node: child,
+                arr: node.children,
+                index: childIndex,
+                parArr: store.nodes,
+                parIndex: nodeIndex,
+              })
+            "
             :id="child.id"
           />
         </div>
@@ -56,9 +96,9 @@ import store from '../../store';
 export default {
   name: 'GraphEditor',
   updated: function() {
-    console.log(this.store);
     if (this.focusId) {
       document.getElementById(this.focusId).focus();
+      this.focusId = null;
     }
   },
   components: {
@@ -69,21 +109,62 @@ export default {
     focusId: null,
   }),
   methods: {
-    addNewNode(arr, index, parId = null) {
-      const newNode = {
-        id: uuid(),
-        text: 'New Node',
-        type: 'concept',
-        concepts: [],
-        parent: parId,
-        children: [],
-      };
+    addNewNode(e, arr, index, parId = null) {
+      if (e.target.value.length > 0) {
+        const newNode = {
+          id: uuid(),
+          text: '',
+          type: 'concept',
+          concepts: [],
+          parent: parId,
+          children: [],
+        };
 
-      this.focusId = newNode.id;
+        this.focusId = newNode.id;
 
-      arr.splice(index + 1, 0, newNode);
+        arr.splice(index + 1, 0, newNode);
+      }
+    },
+    removeNode(e, index, arr) {
+      if (e.target.value.length < 1 || e.key === 'Delete') {
+        e.preventDefault();
+        console.log(index, arr);
+        arr.splice(index, 1);
+        document.getElementById(arr[index - 1].id).focus();
+      }
+    },
+    handleUp({ e, node, index, arr, parArr = [], parIndex = null }) {
+      e.preventDefault();
+      console.log('up', e, node, index, arr, parArr, parIndex);
+    },
+    handleDown({ e, node, index, arr, parArr = [], parIndex = null }) {
+      e.preventDefault();
+      const { children } = node;
 
-      // arr.push(newNode);
+      console.log(parArr.length, parIndex);
+      console.log(parArr.length > parIndex + 1);
+
+      if (children.length > 0) {
+        console.log('ran 1');
+        document.getElementById(children[0].id).focus();
+        return;
+      }
+
+      if (children.length === 0 && arr.length > index + 1) {
+        console.log('ran 2');
+        document.getElementById(arr[index + 1].id).focus();
+        return;
+      }
+
+      if (
+        children.length === 0 &&
+        parIndex !== null &&
+        parArr.length > parIndex + 1
+      ) {
+        console.log('ran 3');
+        document.getElementById(parArr[parIndex + 1].id).focus();
+        return;
+      }
     },
   },
 };
