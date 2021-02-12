@@ -69,7 +69,7 @@ export default {
   computed: {
     renderClass: function() {
       /* 
-        simple function that determins if a node is a parent or not
+        simple function that determines if a node is a parent or not
       */
       if (this.node.children.length < 1) {
         return 'circle';
@@ -93,7 +93,7 @@ export default {
           children: [],
         };
 
-        // set focusId inorder to target newly created node
+        // sets focusId to target newly created node
         this.focusId = newNode.id;
 
         // using splice to insert as next index array
@@ -103,7 +103,7 @@ export default {
     removeNode(e) {
       const { index, arr } = this;
 
-      // if current input lenght is less than 1 or "Delete" key is press removes node
+      // if current input length is less than 1 or "Delete" key is press removes node
       if (e.target.value.length < 1 || e.key === 'Delete') {
         e.preventDefault();
         arr.splice(index, 1);
@@ -159,8 +159,8 @@ export default {
       }
 
       /* 
-        if no children and no siblinging node and there is a sibling node to 
-        parent taget parent sibling node 
+        if no children and no sibling node and there is a sibling node to 
+        parent, target parent's sibling node 
       */
       if (
         children.length === 0 &&
