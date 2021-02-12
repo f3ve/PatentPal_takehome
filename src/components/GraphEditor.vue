@@ -69,7 +69,7 @@ export default {
   computed: {
     renderClass: function() {
       /* 
-        simple function that determines if a circle or caret should be rendered
+        determines if a circle or caret should be rendered
       */
       if (this.node.children.length < 1) {
         return 'circle';
