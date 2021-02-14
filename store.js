@@ -1,4 +1,11 @@
 export default {
+  target: null,
+  setTarget(val) {
+    this.target = val;
+  },
+  clearTarget() {
+    this.target = null;
+  },
   nodes: [
     {
       id: '8c476652-1369-4e3a-ac3b-f5fd4eade2eb',

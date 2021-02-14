@@ -58,20 +58,16 @@ export default {
   data: () => ({
     store,
   }),
-  watch: {
-    focusId: function(val) {
-      /* 
-        focuses newly created nodes
-      */
-      if (val) {
-        document.getElementById(val).focus();
-        this.focusId = null;
-      }
-    },
+  mounted: function() {
+    if (this.store.target !== null) {
+      console.log('mounted');
+      document.getElementById(this.store.target).focus();
+      this.store.clearTarget();
+    }
   },
   computed: {
     renderClass: function() {
-      /* 
+      /*
         determines if a circle or caret should be rendered
       */
       if (this.node.children.length < 1) {
@@ -97,8 +93,7 @@ export default {
         };
 
         // sets focusId to target newly created node
-        this.focusId = newNode.id;
-
+        this.store.setTarget(newNode.id);
         // using splice to insert new node as next index in array
         arr.splice(index + 1, 0, newNode);
       }
@@ -122,6 +117,7 @@ export default {
       // if there is a node above current node with no children target that node
       if (nodeUp && nodeUp.children.length === 0) {
         document.getElementById(nodeUp.id).focus();
+        this.removeNode(e);
         return;
       }
 
@@ -130,59 +126,79 @@ export default {
         document
           .getElementById(nodeUp.children[nodeUp.children.length - 1].id)
           .focus();
+        this.removeNode(e);
         return;
       }
 
       // if current node is a child and it does not have a sibling node above, target parent
       if (!nodeUp && parIndex !== null) {
         document.getElementById(parArr[parIndex].id).focus();
+        this.removeNode(e);
         return;
       }
     },
     handleDown(e) {
       e.preventDefault();
-      const {
-        node: { children },
-        arr,
-        index,
-        parIndex,
-        parArr,
-      } = this;
+      // const {
+      //   node: { children },
+      //   arr,
+      //   index,
+      //   parIndex,
+      //   parArr,
+      // } = this;
 
-      // if length of children is greater than 0, target first child
-      if (children.length > 0) {
-        document.getElementById(children[0].id).focus();
-        return;
-      }
+      //   // if length of children is greater than 0, target first child
+      //   if (children.length > 0) {
+      //     document.getElementById(children[0].id).focus();
+      //     this.removeNode(e);
+      //     return;
+      //   }
 
-      // if no children and there is a node below, target next node
-      if (children.length === 0 && arr.length > index + 1) {
-        document.getElementById(arr[index + 1].id).focus();
-        return;
-      }
+      //   // if no children and there is a node below, target next node
+      //   if (children.length === 0 && arr.length > index + 1) {
+      //     document.getElementById(arr[index + 1].id).focus();
+      //     this.removeNode(e);
+      //     return;
+      //   }
 
-      /* 
-        if node is a child with no children and no siblings below, and parent 
-        has a sibling node, target parent's sibling node.
-      */
-      if (
-        children.length === 0 &&
-        parIndex !== null &&
-        parArr.length > parIndex + 1
-      ) {
-        console.log(parArr[parIndex + 1].id);
-        document.getElementById(parArr[parIndex + 1].id).focus();
-        return;
-      }
+      //   /*
+      //     if node is a child with no children and no siblings below, and parent
+      //     has a sibling node, target parent's sibling node.
+      //   */
+      //   if (
+      //     children.length === 0 &&
+      //     parIndex !== null &&
+      //     parArr.length > parIndex + 1
+      //   ) {
+      //     console.log(parArr[parIndex + 1].id);
+      //     document.getElementById(parArr[parIndex + 1].id).focus();
+      //     this.removeNode(e);
+      //     return;
+      //   }
     },
 
     handleTab(e) {
       e.preventDefault();
-      console.log('tab');
+      const { arr, node, index } = this;
+      const nodeAbove = arr[index - 1];
+
+      if (nodeAbove) {
+        nodeAbove.children.push(node);
+        this.store.setTarget(node.id);
+        arr.splice(index, 1);
+      }
     },
     handleShiftTab(e) {
       e.preventDefault();
-      console.log('shiftTab');
+
+      const { parArr, arr, node, parIndex, index } = this;
+
+      if (parArr) {
+        parArr.splice(parIndex + 1, 0, node);
+        document.getElementById(node.id).id = 'clear';
+        this.store.setTarget(node.id);
+        arr.splice(index, 1);
+      }
     },
   },
 };
