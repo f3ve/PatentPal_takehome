@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span>
     <font-awesome-icon :icon="renderClass" :class="renderClass" />
     <input
       v-model="node.text"
@@ -18,9 +18,10 @@
       draggable=".child"
       group="nodes"
       class="childContainer"
+      tag="ul"
       @change="focusId = null"
     >
-      <div
+      <li
         v-for="(child, childIndex) in node.children"
         :key="child.id"
         class="child"
@@ -33,9 +34,9 @@
           v-bind:parArr="arr"
           v-bind:parIndex="index"
         />
-      </div>
+      </li>
     </draggable>
-  </div>
+  </span>
 </template>
 
 <script>
@@ -98,6 +99,7 @@ export default {
         arr.splice(index + 1, 0, newNode);
       }
     },
+
     removeNode(e) {
       const { index, arr } = this;
 
@@ -108,6 +110,7 @@ export default {
         document.getElementById(arr[index - 1].id).focus();
       }
     },
+
     handleUp(e) {
       e.preventDefault();
 
@@ -154,6 +157,7 @@ export default {
         }
       }
     },
+
     handleDown(e) {
       e.preventDefault();
 
@@ -213,17 +217,24 @@ export default {
       const { arr, node, index } = this;
       const nodeAbove = arr[index - 1];
 
+      /* 
+        If sibling node above push current node into node above children and remove current node
+      */
       if (nodeAbove) {
         nodeAbove.children.push(node);
         this.store.setTarget(node.id);
         arr.splice(index, 1);
       }
     },
+
     handleShiftTab(e) {
       e.preventDefault();
 
       const { parArr, arr, node, parIndex, index } = this;
 
+      /*
+        if node is a child insert it as next sibling to parent
+      */
       if (parArr) {
         parArr.splice(parIndex + 1, 0, node);
         document.getElementById(node.id).id = 'clear';
@@ -236,14 +247,6 @@ export default {
 </script>
 
 <style scoped>
-.child {
-  margin-left: 20px;
-}
-
-.childContainer {
-  padding: 10px;
-}
-
 input.nodeInput {
   border: none;
 }
@@ -256,6 +259,7 @@ input.nodeInput:focus {
 .circle {
   font-size: 10px;
   margin-right: 10px;
+  margin-left: -5px;
 }
 
 .caret-down {
