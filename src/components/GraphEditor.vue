@@ -105,7 +105,10 @@ export default {
       const { index, arr } = this;
 
       // if current input length is less than 1 or "Delete" key is press removes node
-      if (e.target.value.length < 1 || e.key === 'Delete') {
+      if (
+        (e.target.value.length < 1 || e.key === 'Delete') &&
+        (this.parArr || (!this.parArr && arr.length > 1))
+      ) {
         e.preventDefault();
         arr.splice(index, 1);
         document.getElementById(arr[index - 1].id).focus();
@@ -199,7 +202,7 @@ export default {
       }
 
       /*
-        if node is a child with no children and it's parent does not have a 
+        if node is a child with no children and it's parent does not have a
         search DOM for next input
       */
       if (children.length === 0 && parIndex !== null && !parArr[parIndex + 1]) {
@@ -218,7 +221,7 @@ export default {
       const { arr, node, index } = this;
       const nodeAbove = arr[index - 1];
 
-      /* 
+      /*
         If sibling node above push current node into node above children and remove current node
       */
       if (nodeAbove) {
@@ -245,7 +248,10 @@ export default {
     },
 
     onBlur(e) {
-      if (e.target.value.length < 1) {
+      if (
+        (e.target.value.length < 1 && this.parArr) ||
+        (e.target.value.length < 1 && this.arr.length > 1 && !this.parArr)
+      ) {
         this.arr.splice(this.index, 1);
       }
     },

@@ -9,6 +9,7 @@
     </router-link>
     <mq-layout mq="md+">
       <nav id="nav">
+        <router-link to="/">Home</router-link>
         <router-link to="/draft">Draft</router-link>
       </nav>
     </mq-layout>
@@ -52,6 +53,8 @@ img.mainLogo {
 
 #nav a {
   font-weight: bold;
+  text-decoration: none;
+  margin: 0 10px;
   color: #2c3e50;
 }
 

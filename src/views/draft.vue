@@ -1,30 +1,41 @@
 <template>
   <main class="main">
-    <draggable
-      v-model="nodes"
-      draggable=".item"
-      group="nodes"
-      tag="ul"
-      class="tree root"
-    >
-      <li v-for="(node, nodeIndex) in nodes" :key="node.id" class="item">
-        <GraphEditor
-          v-bind:node="node"
-          v-bind:index="nodeIndex"
-          v-bind:arr="nodes"
-        />
-      </li>
-    </draggable>
+    <section>
+      <h2 class="title">Graph</h2>
+      <draggable
+        v-model="store.nodes"
+        draggable=".item"
+        group="nodes"
+        tag="ul"
+        class="tree root"
+      >
+        <li
+          v-for="(node, nodeIndex) in store.nodes"
+          :key="node.id"
+          class="item"
+        >
+          <GraphEditor
+            v-bind:node="node"
+            v-bind:index="nodeIndex"
+            v-bind:arr="store.nodes"
+          />
+        </li>
+      </draggable>
+    </section>
     <button @click="showJson = true" class="button">
       <font-awesome-icon icon="arrow-right" />
     </button>
-    <div class="root" id="json">
-      <transition name="slide-fade">
-        <div v-if="showJson">
-          <JsonViewer :value="nodes" :expand-depth="5" />
-        </div>
-      </transition>
-    </div>
+    <section>
+      <h2 class="title">JSON Preview</h2>
+      <div class="root" id="json">
+        <transition name="slide-fade">
+          <div v-if="showJson">
+            <JsonViewer :value="store.nodes" :expand-depth="5" />
+          </div>
+        </transition>
+      </div>
+    </section>
+    <Fob v-bind:store="store" />
   </main>
 </template>
 
@@ -33,22 +44,29 @@ import store from '../../store';
 import GraphEditor from '../components/GraphEditor';
 import draggable from 'vuedraggable';
 import JsonViewer from 'vue-json-viewer';
+import Fob from '../components/fab';
 
 export default {
   name: 'Draft',
   data: () => ({
-    nodes: store.nodes,
+    store,
     showJson: false,
   }),
   components: {
     GraphEditor,
     draggable,
     JsonViewer,
+    Fob,
   },
 };
 </script>
 
 <style>
+.title {
+  font-size: 20px;
+  display: inline;
+}
+
 .slide-fade-enter-active {
   transition: all 0.5s;
 }
