@@ -3,7 +3,6 @@
     <font-awesome-icon :icon="renderClass" :class="renderClass" />
     <input
       v-model="node.text"
-      type="text"
       class="nodeInput"
       v-on:keydown.delete="removeNode"
       v-on:keypress.enter="addNewNode"
@@ -12,6 +11,8 @@
       v-on:keydown.exact.tab="handleTab"
       v-on:keydown.exact.shift.tab="handleShiftTab"
       :id="node.id"
+      :size="node.text"
+      v-on:blur="onBlur"
     />
     <draggable
       v-model="node.children"
@@ -242,24 +243,34 @@ export default {
         arr.splice(index, 1);
       }
     },
+
+    onBlur(e) {
+      if (e.target.value.length < 1) {
+        this.arr.splice(this.index, 1);
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
-input.nodeInput {
+.nodeInput {
+  display: inline;
   border: none;
+  padding: 0;
+  margin: 0;
+  width: 80%;
+  background-color: transparent;
 }
 
-input.nodeInput:focus {
+.nodeInput:focus {
   border: none;
-  outline: none;
+  outline: 1px dotted lightblue;
 }
 
 .circle {
   font-size: 10px;
   margin-right: 10px;
-  margin-left: -5px;
 }
 
 .caret-down {

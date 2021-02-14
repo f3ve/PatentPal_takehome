@@ -6,11 +6,12 @@ import {
   faBars,
   faCircle,
   faCaretDown,
+  faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueMq from 'vue-mq';
 
-library.add(faBars, faCircle, faCaretDown);
+library.add(faBars, faCircle, faCaretDown, faArrowRight);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
