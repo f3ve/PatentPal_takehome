@@ -79,7 +79,7 @@ export default {
   methods: {
     addNewNode(e) {
       const { arr, index } = this;
-      const parId = this.parArr[this.parIndex].id; // parent id to assign to new node
+      const parId = this.parArr ? this.parArr[this.parIndex].id : null; // parent id to assign to new node
 
       // if length of current input is greater than 0 creates new node
       if (e.target.value.length > 0) {
@@ -139,42 +139,42 @@ export default {
     },
     handleDown(e) {
       e.preventDefault();
-      // const {
-      //   node: { children },
-      //   arr,
-      //   index,
-      //   parIndex,
-      //   parArr,
-      // } = this;
+      const {
+        node: { children },
+        arr,
+        index,
+        parIndex,
+        parArr,
+      } = this;
 
-      //   // if length of children is greater than 0, target first child
-      //   if (children.length > 0) {
-      //     document.getElementById(children[0].id).focus();
-      //     this.removeNode(e);
-      //     return;
-      //   }
+      // if length of children is greater than 0, target first child
+      if (children.length > 0) {
+        document.getElementById(children[0].id).focus();
+        this.removeNode(e);
+        return;
+      }
 
-      //   // if no children and there is a node below, target next node
-      //   if (children.length === 0 && arr.length > index + 1) {
-      //     document.getElementById(arr[index + 1].id).focus();
-      //     this.removeNode(e);
-      //     return;
-      //   }
+      // if no children and there is a node below, target next node
+      if (children.length === 0 && arr.length > index + 1) {
+        document.getElementById(arr[index + 1].id).focus();
+        this.removeNode(e);
+        return;
+      }
 
-      //   /*
-      //     if node is a child with no children and no siblings below, and parent
-      //     has a sibling node, target parent's sibling node.
-      //   */
-      //   if (
-      //     children.length === 0 &&
-      //     parIndex !== null &&
-      //     parArr.length > parIndex + 1
-      //   ) {
-      //     console.log(parArr[parIndex + 1].id);
-      //     document.getElementById(parArr[parIndex + 1].id).focus();
-      //     this.removeNode(e);
-      //     return;
-      //   }
+      /*
+          if node is a child with no children and no siblings below, and parent
+          has a sibling node, target parent's sibling node.
+        */
+      if (
+        children.length === 0 &&
+        parIndex !== null &&
+        parArr.length > parIndex + 1
+      ) {
+        console.log(parArr[parIndex + 1].id);
+        document.getElementById(parArr[parIndex + 1].id).focus();
+        this.removeNode(e);
+        return;
+      }
     },
 
     handleTab(e) {
