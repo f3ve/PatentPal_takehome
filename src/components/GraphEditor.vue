@@ -121,8 +121,12 @@ export default {
         return;
       }
 
-      // if there is a node with children target it's last child
-      if (nodeUp && nodeUp.children.length > 0) {
+      // if there is a node with children and it's last child does not have children target last child
+      if (
+        nodeUp &&
+        nodeUp.children.length > 0 &&
+        nodeUp.children[nodeUp.children.length - 1].children.length === 0
+      ) {
         document
           .getElementById(nodeUp.children[nodeUp.children.length - 1].id)
           .focus();
@@ -136,9 +140,23 @@ export default {
         this.removeNode(e);
         return;
       }
+
+      // if there is a node above with deeply nested children traverse DOM for next input
+      if (
+        nodeUp &&
+        nodeUp.children[nodeUp.children.length - 1].children.length > 0
+      ) {
+        const inputs = document.getElementsByClassName('nodeInput');
+        for (let i = 0, il = inputs.length; i < il; i++) {
+          if (inputs[i].id === this.node.id) {
+            document.getElementById(inputs[i - 1].id).focus();
+          }
+        }
+      }
     },
     handleDown(e) {
       e.preventDefault();
+
       const {
         node: { children },
         arr,
@@ -162,18 +180,31 @@ export default {
       }
 
       /*
-          if node is a child with no children and no siblings below, and parent
-          has a sibling node, target parent's sibling node.
-        */
+        if node is a child with no children and no siblings below, and parent
+        has a sibling node, target parent's sibling node.
+      */
       if (
         children.length === 0 &&
         parIndex !== null &&
         parArr.length > parIndex + 1
       ) {
-        console.log(parArr[parIndex + 1].id);
         document.getElementById(parArr[parIndex + 1].id).focus();
         this.removeNode(e);
         return;
+      }
+
+      /*
+        if node is a child with no children and it's parent does not have a 
+        search DOM for next input
+      */
+      if (children.length === 0 && parIndex !== null && !parArr[parIndex + 1]) {
+        const inputs = document.getElementsByClassName('nodeInput');
+        for (let i = 0, il = inputs.length; i < il; i++) {
+          if (inputs[i].id === this.node.id) {
+            document.getElementById(inputs[i + 1].id).focus();
+            return;
+          }
+        }
       }
     },
 
