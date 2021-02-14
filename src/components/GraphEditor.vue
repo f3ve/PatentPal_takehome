@@ -9,6 +9,8 @@
       v-on:keypress.enter="addNewNode"
       v-on:keydown.up="handleUp"
       v-on:keydown.down="handleDown"
+      v-on:keydown.exact.tab="handleTab"
+      v-on:keydown.exact.shift.tab="handleShiftTab"
       :id="node.id"
     />
     <draggable
@@ -38,6 +40,7 @@
 
 <script>
 import draggable from 'vuedraggable';
+import store from '../../store';
 import { v4 as uuid } from 'uuid';
 
 export default {
@@ -53,7 +56,7 @@ export default {
     parIndex: Number, // parent index
   },
   data: () => ({
-    focusId: null, // id used for targeting newly created nodes
+    store,
   }),
   watch: {
     focusId: function(val) {
@@ -171,6 +174,15 @@ export default {
         document.getElementById(parArr[parIndex + 1].id).focus();
         return;
       }
+    },
+
+    handleTab(e) {
+      e.preventDefault();
+      console.log('tab');
+    },
+    handleShiftTab(e) {
+      e.preventDefault();
+      console.log('shiftTab');
     },
   },
 };
