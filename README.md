@@ -2,9 +2,9 @@
 
 ## Description
 
-This is a demo graph editor built for the patentPal team. It features a full functional Graph Editor with intuitive controls. Keyboard controls were largely inspired by editors like VScode and Atom.
+This is a demo graph editor built for the patentPal team. It features a fully functional Graph Editor with intuitive controls. Keyboard controls were largely inspired by editors like VScode and Atom.
 
-To the team at PatentPal, Thank you very much for taking the time to review my project and considering me for this role. I Look forward to presenting this to you and receiving your feedback
+To the team at PatentPal, Thank you very much for taking the time to review my project and considering me for this role. I Look forward to presenting this to you and receiving your feedback.
 
 - Visit the live [Demo](https://patent-pal-takehome.vercel.app/)
 - Or follow the the project set up instructions to run locally.
@@ -39,7 +39,7 @@ Click the arrow button in the middle of the screen to toggle the JSON preview on
 
 ### Drag and Drop
 
-You can click and drag any node in the editor. Grabbing a parent node will move all of it's children also.
+You can click and drag any node in the editor. Grabbing a parent node will move all of it's children also. Also works on mobile devices
 
 ## Project setup
 
