@@ -69,9 +69,12 @@ export default {
     store, // global store
   }),
   mounted: function() {
-    if (this.store.target !== null) {
+    const { store } = this;
+
+    // if target is not null focus it
+    if (store.target !== null) {
       document.getElementById(this.store.target).focus();
-      this.store.clearTarget();
+      store.clearTarget();
     }
   },
   watch: {
@@ -108,33 +111,33 @@ export default {
   },
   methods: {
     addNewNode(e) {
-      const { arr, index, parId } = this;
+      const { arr, index, parId, store } = this;
 
       // if length of current input is greater than 0 creates new node
       if (e.target.value.length > 0) {
         const newNode = {
           id: uuid(),
           text: '',
-          type: 'concept',
+          type: 'CONCEPT',
           concepts: [],
           parent: parId,
           children: [],
         };
 
         // sets focusId to target newly created node
-        this.store.setTarget(newNode.id);
+        store.setTarget(newNode.id);
         // using splice to insert new node as next index in array
         arr.splice(index + 1, 0, newNode);
       }
     },
 
     removeNode(e) {
-      const { arr, index } = this;
+      const { arr, index, parArr } = this;
 
       // if current input length is less than 1 or "Delete" key is pressed removes node
       if (
         (e.target.value.length < 1 || e.key === 'Delete') &&
-        (this.parArr || (!this.parArr && arr.length > 1))
+        (parArr || (!parArr && arr.length > 1))
       ) {
         e.preventDefault();
         if (e.key === 'Delete') {
@@ -149,7 +152,7 @@ export default {
     handleUp(e) {
       e.preventDefault();
 
-      const { index, arr, parId } = this;
+      const { index, arr, parId, node } = this;
       const nodeUp = arr[index - 1];
 
       // if there is a node above current node with no children target that node
@@ -184,7 +187,7 @@ export default {
       ) {
         const inputs = document.getElementsByClassName('nodeInput');
         for (let i = 0, il = inputs.length; i < il; i++) {
-          if (inputs[i].id === this.node.id) {
+          if (inputs[i].id === node.id) {
             document.getElementById(inputs[i - 1].id).focus();
           }
         }
@@ -194,13 +197,8 @@ export default {
     handleDown(e) {
       e.preventDefault();
 
-      const {
-        node: { children },
-        arr,
-        index,
-        parIndex,
-        parArr,
-      } = this;
+      const { node, arr, index, parIndex, parArr } = this;
+      const { children } = node;
 
       // if length of children is greater than 0, target first child
       if (children.length > 0) {
@@ -234,7 +232,7 @@ export default {
       if (children.length === 0 && parIndex !== null && !parArr[parIndex + 1]) {
         const inputs = document.getElementsByClassName('nodeInput');
         for (let i = 0, il = inputs.length; i < il; i++) {
-          if (inputs[i].id === this.node.id) {
+          if (inputs[i].id === node.id) {
             document.getElementById(inputs[i + 1].id).focus();
             return;
           }
@@ -244,7 +242,7 @@ export default {
 
     handleTab(e) {
       e.preventDefault();
-      const { arr, node, index } = this;
+      const { arr, node, index, store } = this;
       const nodeAbove = arr[index - 1];
 
       /*
@@ -252,7 +250,7 @@ export default {
       */
       if (nodeAbove) {
         nodeAbove.children.push(node);
-        this.store.setTarget(node.id);
+        store.setTarget(node.id);
         arr.splice(index, 1);
       }
     },
@@ -260,15 +258,14 @@ export default {
     handleShiftTab(e) {
       e.preventDefault();
 
-      const { parArr, arr, node, parIndex, index } = this;
-
+      const { parArr, arr, node, parIndex, index, store } = this;
       /*
         if node is a child insert it as next sibling to parent
       */
       if (parArr) {
         parArr.splice(parIndex + 1, 0, node);
         document.getElementById(node.id).id = 'clear';
-        this.store.setTarget(node.id);
+        store.setTarget(node.id);
         arr.splice(index, 1);
       }
     },
@@ -276,12 +273,13 @@ export default {
     onBlur(e) {
       // removes node if value is less than 1 and it is not the only node in the editor
       // will not remove node if it has children, user can press delete to delete a node and it's children
+      const { parArr, arr, node } = this;
       if (
-        ((e.target.value.length < 1 && this.parArr) ||
-          (e.target.value.length < 1 && this.arr.length > 1 && !this.parArr)) &&
-        this.node.children.length === 0
+        ((e.target.value.length < 1 && parArr) ||
+          (e.target.value.length < 1 && arr.length > 1 && !parArr)) &&
+        node.children.length === 0
       ) {
-        this.arr.splice(this.index, 1);
+        arr.splice(this.index, 1);
       }
     },
   },
