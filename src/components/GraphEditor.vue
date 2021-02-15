@@ -73,12 +73,14 @@ export default {
       immediate: true,
       deep: true,
       handler() {
+        // if node has children set type to concept
         if (this.node.children.length > 0) {
           this.node.type = 'CONCEPT';
         } else {
           this.node.type = 'CONTEXT';
         }
 
+        // if node has a parent array set parent to parent of array
         if (this.parArr) {
           this.node.parent = this.parArr[this.parIndex].id;
         }
@@ -266,6 +268,7 @@ export default {
     },
 
     onBlur(e) {
+      // removes node if value is less than 1 and it is not the only node in the editor
       if (
         (e.target.value.length < 1 && this.parArr) ||
         (e.target.value.length < 1 && this.arr.length > 1 && !this.parArr)
