@@ -82,6 +82,13 @@ export default {
         }
       },
     },
+
+    parId: {
+      immediate: true,
+      handler() {
+        this.node.parent = this.parId;
+      },
+    },
   },
   computed: {
     renderClass: function() {
