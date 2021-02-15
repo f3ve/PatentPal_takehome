@@ -44,7 +44,7 @@ export default {
       ) {
         return 'Clear Data';
       }
-      return 'Insert Demo Data';
+      return 'Demo Data';
     },
   },
 };
@@ -58,10 +58,11 @@ export default {
   right: 5%;
   background-color: #e04c4c;
   border: none;
-  border-radius: 20px;
+  border-radius: 50px;
   color: white;
-  padding: 10px;
   font-size: 20px;
+  width: 75px;
+  height: 75px;
 }
 
 .fab:hover {

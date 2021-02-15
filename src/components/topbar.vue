@@ -1,5 +1,5 @@
 <template>
-  <header class="topbar">
+  <header :class="scrolled ? 'topbar scrolled' : 'topbar'">
     <router-link to="/">
       <img
         src="../assets/PatentPal_Logo.png"
@@ -26,9 +26,29 @@
 <script>
 export default {
   name: 'Topbar',
+  mounted: function() {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+
+  data() {
+    return {
+      scrolled: false,
+    };
+  },
+
+  beforeDestroy: function() {
+    window.removeEventListener('scroll', this.handleScroll());
+  },
   methods: {
     click: () => {
       console.log('clicked');
+    },
+    handleScroll() {
+      if (window.pageYOffset > 0) {
+        this.scrolled = true;
+      } else {
+        this.scrolled = false;
+      }
     },
   },
 };
@@ -46,6 +66,11 @@ header.topbar {
   z-index: 3;
   top: 0;
   width: 100%;
+  transition: all 0.3s;
+}
+
+.scrolled {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 img.mainLogo {

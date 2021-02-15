@@ -65,7 +65,7 @@ export default {
 .bottomBanner {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
 }
 
 .home p {
@@ -169,6 +169,10 @@ export default {
   .bannerText {
     align-items: center;
     margin-bottom: 75px;
+  }
+
+  .bottomBanner {
+    flex-wrap: wrap;
   }
 }
 </style>

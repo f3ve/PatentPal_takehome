@@ -25,16 +25,18 @@
     <button @click="showJson = true" class="button">
       <font-awesome-icon icon="arrow-right" />
     </button>
-    <section>
-      <h2 class="title">JSON Preview</h2>
-      <div class="root" id="json">
-        <transition name="slide-fade">
-          <div v-if="showJson">
-            <JsonViewer :value="store.nodes" :expand-depth="5" />
-          </div>
-        </transition>
-      </div>
-    </section>
+    <mq-layout mq="lg+">
+      <section>
+        <h2 class="title">JSON Preview</h2>
+        <div class="root" id="json">
+          <transition name="slide-fade">
+            <div v-if="showJson">
+              <JsonViewer :value="store.nodes" :expand-depth="5" />
+            </div>
+          </transition>
+        </div>
+      </section>
+    </mq-layout>
     <Fob v-bind:store="store" />
   </main>
 </template>
@@ -72,7 +74,6 @@ export default {
 }
 
 .slide-fade-enter {
-  width: 0;
   opacity: 0;
 }
 
@@ -91,7 +92,6 @@ export default {
 }
 
 .slide-fade-enter-to {
-  width: 600px;
   opacity: 1;
 }
 
@@ -109,8 +109,8 @@ export default {
 
 .root {
   background-color: white;
-  width: 600px;
-  max-width: 100%;
+  width: 100vw;
+  max-width: 600px;
   height: 80vh;
   border-radius: 5px;
   overflow: auto;
@@ -171,5 +171,11 @@ export default {
   height: auto;
   top: 1em;
   bottom: 0;
+}
+
+@media only screen and (max-width: 960px) {
+  .button {
+    display: none;
+  }
 }
 </style>
