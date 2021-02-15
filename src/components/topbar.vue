@@ -37,10 +37,15 @@ export default {
 <style scoped>
 header.topbar {
   display: flex;
+  position: fixed;
   align-items: center;
   justify-content: space-between;
+  background-color: #ffffff;
   height: 64px;
   padding: 30px;
+  z-index: 3;
+  top: 0;
+  width: 100%;
 }
 
 img.mainLogo {

@@ -104,6 +104,7 @@ export default {
   padding: 100px;
   padding-top: 20px;
   align-items: center;
+  padding-top: 150px;
 }
 
 .root {
