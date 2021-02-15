@@ -270,9 +270,11 @@ export default {
 
     onBlur(e) {
       // removes node if value is less than 1 and it is not the only node in the editor
+      // will not remove node if it has children, user can press delete to delete a node and it's children
       if (
-        (e.target.value.length < 1 && this.parArr) ||
-        (e.target.value.length < 1 && this.arr.length > 1 && !this.parArr)
+        ((e.target.value.length < 1 && this.parArr) ||
+          (e.target.value.length < 1 && this.arr.length > 1 && !this.parArr)) &&
+        this.node.children.length === 0
       ) {
         this.arr.splice(this.index, 1);
       }
