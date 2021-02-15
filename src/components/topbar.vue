@@ -105,8 +105,8 @@ a {
   color: #2c3e50;
 }
 
-a.router-link-exact-active {
-  color: #e04c4c;
+nav a.router-link-exact-active {
+  color: #e04c4c !important;
 }
 
 .hamburger {

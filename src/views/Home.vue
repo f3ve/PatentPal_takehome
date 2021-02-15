@@ -14,7 +14,11 @@
               and I hope you like what I've built.
             </p>
           </div>
-          <router-link to="/draft" class="linkButton">Get Started</router-link>
+          <router-link to="/draft" class="linkButton">
+            <span>
+              Get Started
+            </span>
+          </router-link>
         </div>
         <img
           src="../assets/Robot-Figure.webp"
@@ -65,7 +69,6 @@ export default {
 .bottomBanner {
   display: flex;
   justify-content: space-between;
-  /* flex-wrap: wrap; */
 }
 
 .home p {
@@ -147,11 +150,19 @@ export default {
 .linkButton {
   background-color: #e04c4c;
   width: fit-content;
-  height: 50px;
+  display: flex;
+  align-items: center;
   color: white;
-  padding: 15px;
   border-radius: 50px;
   text-decoration: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 50px;
+  transition: all 0.2s;
+}
+
+.linkButton:hover {
+  box-shadow: 0 0 10px rgba(224, 76, 76, 0.5);
 }
 
 @media only screen and (max-width: 800px) {
