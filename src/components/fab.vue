@@ -11,25 +11,29 @@ export default {
   name: 'Fab',
   data() {
     return {
-      fillerNodes,
+      fillerNodes, // dummy data
     };
   },
   props: {
-    store: Object,
+    store: Object, // global store
   },
   methods: {
     insertDummyData() {
+      // Inserts dummy data into global store
       this.store.setNodes(this.fillerNodes);
     },
 
     clearData() {
+      // clears any data in store
       this.store.clearNodes();
     },
 
     handleClick() {
+      // if text is clear data clears data
       if (this.text === 'Clear Data') {
         this.store.clearNodes();
       } else {
+        // else insert dummy data
         this.store.setNodes(this.fillerNodes);
       }
     },
@@ -37,6 +41,7 @@ export default {
 
   computed: {
     text: function() {
+      // determines what text should be displayed on button
       if (
         this.store.nodes.length > 1 ||
         this.store.nodes[0].children.length > 0

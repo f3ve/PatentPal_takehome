@@ -1,5 +1,6 @@
 <template>
   <main class="main">
+    <!-- Graph Editor -->
     <section>
       <h2 class="title">Graph</h2>
       <draggable
@@ -14,7 +15,7 @@
           :key="node.id"
           class="item"
         >
-          <GraphEditor
+          <Node
             v-bind:node="node"
             v-bind:index="nodeIndex"
             v-bind:arr="store.nodes"
@@ -22,9 +23,13 @@
         </li>
       </draggable>
     </section>
-    <button @click="showJson = true" class="button">
+    <!-- End Graph Editor -->
+
+    <button @click="showJson = !showJson" class="button">
       <font-awesome-icon icon="arrow-right" />
     </button>
+
+    <!-- JSON Preview -->
     <mq-layout mq="lg+">
       <section>
         <h2 class="title">JSON Preview</h2>
@@ -37,13 +42,15 @@
         </div>
       </section>
     </mq-layout>
+    <!-- End JSON Preview -->
+
     <Fob v-bind:store="store" />
   </main>
 </template>
 
 <script>
 import store from '../../store';
-import GraphEditor from '../components/GraphEditor';
+import Node from '../components/Node';
 import draggable from 'vuedraggable';
 import JsonViewer from 'vue-json-viewer';
 import Fob from '../components/fab';
@@ -51,11 +58,11 @@ import Fob from '../components/fab';
 export default {
   name: 'Draft',
   data: () => ({
-    store,
-    showJson: false,
+    store, // global store
+    showJson: false, // whether json should be rendered or not
   }),
   components: {
-    GraphEditor,
+    Node,
     draggable,
     JsonViewer,
     Fob,

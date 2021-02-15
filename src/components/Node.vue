@@ -1,5 +1,6 @@
 <template>
   <span>
+    <!-- Icon and Input -->
     <font-awesome-icon :icon="renderClass" :class="renderClass" />
     <input
       v-model="node.text"
@@ -15,6 +16,9 @@
       v-on:blur="onBlur"
       placeholder="New Node..."
     />
+    <!-- End Icon and Input -->
+
+    <!-- Children List -->
     <draggable
       v-model="node.children"
       draggable=".child"
@@ -29,7 +33,7 @@
         class="child"
       >
         <!-- Using recursion to render children of node -->
-        <GraphEditor
+        <Node
           v-bind:node="child"
           v-bind:index="childIndex"
           v-bind:arr="node.children"
@@ -39,6 +43,7 @@
         />
       </li>
     </draggable>
+    <!-- End children list-->
   </span>
 </template>
 
@@ -48,7 +53,7 @@ import store from '../../store';
 import { v4 as uuid } from 'uuid';
 
 export default {
-  name: 'GraphEditor',
+  name: 'Node',
   components: {
     draggable,
   },
@@ -61,7 +66,7 @@ export default {
     parId: String, // Parent ID
   },
   data: () => ({
-    store,
+    store, // global store
   }),
   mounted: function() {
     if (this.store.target !== null) {

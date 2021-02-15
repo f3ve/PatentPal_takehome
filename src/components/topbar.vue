@@ -7,15 +7,20 @@
         class="mainLogo"
       />
     </router-link>
+
+    <!-- Nav Manu for large screens -->
     <mq-layout mq="md+">
       <nav id="nav">
         <router-link to="/">Home</router-link>
         <router-link to="/draft">Draft</router-link>
       </nav>
     </mq-layout>
+    <!-- End large screen menu -->
+
+    <!-- Nav Menu for smalls screens -->
     <mq-layout mq="sm">
       <nav class="dropdown">
-        <button class="hamburger" @click="click">
+        <button class="hamburger" @click="toggleDropdown">
           <font-awesome-icon icon="bars" />
         </button>
         <transition name="slide-fade">
@@ -26,6 +31,7 @@
         </transition>
       </nav>
     </mq-layout>
+    <!-- End large screen menu -->
   </header>
 </template>
 
@@ -49,11 +55,14 @@ export default {
     window.removeEventListener('click', this.handleClick);
   },
   methods: {
-    click(e) {
+    toggleDropdown(e) {
       e.stopPropagation();
       this.dropDown = !this.dropDown;
     },
     handleClick() {
+      /*
+        if user clicks anywhere on screen while dropdown is open, closes dropdown
+      */
       if (this.dropDown) {
         this.dropDown = false;
       }
