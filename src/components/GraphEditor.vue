@@ -13,6 +13,7 @@
       :id="node.id"
       :size="node.text"
       v-on:blur="onBlur"
+      placeholder="New Node..."
     />
     <draggable
       v-model="node.children"
@@ -66,6 +67,23 @@ export default {
       document.getElementById(this.store.target).focus();
       this.store.clearTarget();
     }
+  },
+  watch: {
+    node: {
+      immediate: true,
+      deep: true,
+      handler() {
+        if (this.node.children.length > 0) {
+          this.node.type = 'CONCEPT';
+        } else {
+          this.node.type = 'CONTEXT';
+        }
+
+        if (this.parArr) {
+          this.node.parent = this.parArr[this.parIndex].id;
+        }
+      },
+    },
   },
   computed: {
     renderClass: function() {
