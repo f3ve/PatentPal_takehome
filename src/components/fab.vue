@@ -43,7 +43,7 @@ export default {
       ) {
         return 'Clear Data';
       }
-      return 'Demo Data';
+      return 'Use Demo Data';
     },
   },
 };
@@ -59,9 +59,8 @@ export default {
   border: none;
   border-radius: 50px;
   color: white;
-  font-size: 20px;
-  width: 75px;
-  height: 75px;
+  font-size: 16px;
+  padding: 10px;
 }
 
 .fab:hover {
