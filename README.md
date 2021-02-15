@@ -1,4 +1,9 @@
 # patentpal_take_home
+- [Description](#description)
+- [Core Tech](#core-tech-libraries-and-frameworks)
+- [How-to-use](#how-to-use)
+- [Project setup](#project-setup)
+- [Screenshots](#screenshots)
 
 ## Description
 
@@ -9,7 +14,7 @@ To the team at PatentPal, Thank you very much for taking the time to review my p
 - Visit the live [Demo](https://patent-pal-takehome.vercel.app/)
 - Or follow the the project set up instructions to run locally.
 
-## Core Tech Libraries/Frameworks
+## Core Tech Libraries and Frameworks
 
 - [VueJS](https://vuejs.org/)
 - [VueDraggable](https://github.com/SortableJS/Vue.Draggable)
