@@ -64,3 +64,17 @@ npm run build
 ```
 npm run lint
 ```
+
+## Screenshots
+
+### Landing Page
+![Landing Page](https://raw.githubusercontent.com/f3ve/PatentPal_takehome/main/src/assets/landing%20page.png)
+
+### Editor Page with no user input
+![Editor no user input](https://raw.githubusercontent.com/f3ve/PatentPal_takehome/main/src/assets/noData.png)
+
+### Editor Page with User input
+![Editor user input](https://raw.githubusercontent.com/f3ve/PatentPal_takehome/main/src/assets/withData.png)
+
+### Editor With JSON Preview
+![JSON PREVIEW](https://raw.githubusercontent.com/f3ve/PatentPal_takehome/main/src/assets/withJsonPreview.png)
