@@ -1,29 +1,5 @@
 # patentpal_take_home
 
-## Project setup
-
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
 ## Description
 
 This is a demo graph editor built for the patentPal team. It features a full functional Graph Editor with intuitive controls. Keyboard controls were largely inspired by editors like VScode and Atom.
@@ -64,3 +40,27 @@ Click the arrow button in the middle of the screen to toggle the JSON preview on
 ### Drag and Drop
 
 You can click and drag any node in the editor. Grabbing a parent node will move all of it's children also.
+
+## Project setup
+
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+
+```
+npm run build
+```
+
+### Lints and fixes files
+
+```
+npm run lint
+```
