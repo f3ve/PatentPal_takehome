@@ -37,7 +37,6 @@ export default {
 
   computed: {
     text: function() {
-      console.log('ran');
       if (
         this.store.nodes.length > 1 ||
         this.store.nodes[0].children.length > 0

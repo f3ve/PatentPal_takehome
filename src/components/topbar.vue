@@ -54,7 +54,6 @@ export default {
       this.dropDown = !this.dropDown;
     },
     handleClick() {
-      console.log('click');
       if (this.dropDown) {
         this.dropDown = false;
       }

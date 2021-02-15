@@ -35,6 +35,7 @@
           v-bind:arr="node.children"
           v-bind:parArr="arr"
           v-bind:parIndex="index"
+          v-bind:parId="node.id"
         />
       </li>
     </draggable>
@@ -57,13 +58,13 @@ export default {
     arr: Array, // array containing node
     parArr: Array, // array containing parent
     parIndex: Number, // parent index
+    parId: String, // Parent ID
   },
   data: () => ({
     store,
   }),
   mounted: function() {
     if (this.store.target !== null) {
-      console.log('mounted');
       document.getElementById(this.store.target).focus();
       this.store.clearTarget();
     }
@@ -78,11 +79,6 @@ export default {
           this.node.type = 'CONCEPT';
         } else {
           this.node.type = 'CONTEXT';
-        }
-
-        // if node has a parent array set parent to parent of array
-        if (this.parArr) {
-          this.node.parent = this.parArr[this.parIndex].id;
         }
       },
     },
@@ -100,8 +96,7 @@ export default {
   },
   methods: {
     addNewNode(e) {
-      const { arr, index } = this;
-      const parId = this.parArr ? this.parArr[this.parIndex].id : null; // parent id to assign to new node
+      const { arr, index, parId } = this;
 
       // if length of current input is greater than 0 creates new node
       if (e.target.value.length > 0) {
@@ -122,33 +117,36 @@ export default {
     },
 
     removeNode(e) {
-      const { index, arr } = this;
+      const { arr, index } = this;
 
-      // if current input length is less than 1 or "Delete" key is press removes node
+      // if current input length is less than 1 or "Delete" key is pressed removes node
       if (
         (e.target.value.length < 1 || e.key === 'Delete') &&
         (this.parArr || (!this.parArr && arr.length > 1))
       ) {
         e.preventDefault();
-        arr.splice(index, 1);
-        document.getElementById(arr[index - 1].id).focus();
+        if (e.key === 'Delete') {
+          arr.splice(index, 1);
+        }
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+          this.handleUp(e);
+        }
       }
     },
 
     handleUp(e) {
       e.preventDefault();
 
-      const { index, arr, parArr, parIndex } = this;
+      const { index, arr, parId } = this;
       const nodeUp = arr[index - 1];
 
       // if there is a node above current node with no children target that node
       if (nodeUp && nodeUp.children.length === 0) {
         document.getElementById(nodeUp.id).focus();
-        this.removeNode(e);
         return;
       }
 
-      // if there is a node with children and it's last child does not have children target last child
+      // if node above has children and it's last child does not have children target last child
       if (
         nodeUp &&
         nodeUp.children.length > 0 &&
@@ -157,14 +155,13 @@ export default {
         document
           .getElementById(nodeUp.children[nodeUp.children.length - 1].id)
           .focus();
-        this.removeNode(e);
+
         return;
       }
 
       // if current node is a child and it does not have a sibling node above, target parent
-      if (!nodeUp && parIndex !== null) {
-        document.getElementById(parArr[parIndex].id).focus();
-        this.removeNode(e);
+      if (!nodeUp && parId) {
+        document.getElementById(parId).focus();
         return;
       }
 
@@ -196,14 +193,12 @@ export default {
       // if length of children is greater than 0, target first child
       if (children.length > 0) {
         document.getElementById(children[0].id).focus();
-        this.removeNode(e);
         return;
       }
 
       // if no children and there is a node below, target next node
       if (children.length === 0 && arr.length > index + 1) {
         document.getElementById(arr[index + 1].id).focus();
-        this.removeNode(e);
         return;
       }
 
@@ -217,12 +212,11 @@ export default {
         parArr.length > parIndex + 1
       ) {
         document.getElementById(parArr[parIndex + 1].id).focus();
-        this.removeNode(e);
         return;
       }
 
       /*
-        if node is a child with no children and it's parent does not have a
+        if node is a child with no children and it's parent does not have a sibling
         search DOM for next input
       */
       if (children.length === 0 && parIndex !== null && !parArr[parIndex + 1]) {
