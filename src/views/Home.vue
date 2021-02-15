@@ -65,6 +65,7 @@ export default {
 .bottomBanner {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .home p {
@@ -110,8 +111,6 @@ export default {
   width: 1080px;
   max-width: 100%;
   height: 100%;
-  margin-left: auto;
-  margin-right: auto;
   align-self: center;
 }
 
@@ -141,6 +140,7 @@ export default {
 }
 
 .bigLogo {
+  max-width: 100%;
   max-height: 420px;
 }
 
@@ -152,5 +152,23 @@ export default {
   padding: 15px;
   border-radius: 50px;
   text-decoration: none;
+}
+
+@media only screen and (max-width: 800px) {
+  .banner {
+    flex-direction: column;
+    margin-top: 75px;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .homeMain {
+    justify-content: space-between;
+  }
+
+  .bannerText {
+    align-items: center;
+    margin-bottom: 75px;
+  }
 }
 </style>
