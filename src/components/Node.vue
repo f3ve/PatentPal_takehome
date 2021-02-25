@@ -239,31 +239,26 @@ export default {
 
     handleTab(e) {
       e.preventDefault();
-      const { arr, node, index, store } = this;
+      const { arr, index } = this;
       const nodeAbove = arr[index - 1];
 
       /*
         If sibling node above push current node into node above children and remove current node
       */
       if (nodeAbove) {
-        nodeAbove.children.push(node);
-        store.setTarget(node.id);
-        arr.splice(index, 1);
+        DomHelpers.tabForward(this, nodeAbove);
       }
     },
 
     handleShiftTab(e) {
       e.preventDefault();
 
-      const { parentArray, arr, node, parentIndex, index, store } = this;
+      const { parentArray } = this;
       /*
         if node is a child insert it as next sibling to parent
       */
       if (parentArray) {
-        parentArray.splice(parentIndex + 1, 0, node);
-        document.getElementById(node.id).id = 'clear';
-        store.setTarget(node.id);
-        arr.splice(index, 1);
+        DomHelpers.tabBack(this);
       }
     },
 
