@@ -3,7 +3,7 @@
 */
 
 export default {
-  SearchForNextNodeDown(id) {
+  searchForNextNodeDown(id) {
     /*
       Searches for next node down by looping through nodeInputs until it finds 
       specified input.
@@ -17,7 +17,7 @@ export default {
     }
   },
 
-  SearchForNextNodeUp(id) {
+  searchForNextNodeUp(id) {
     /* 
       Searches for next node up by looping through nodeInputs until it finds 
       specified input.
@@ -49,5 +49,12 @@ export default {
     nodeAbove.children.push(args.node);
     args.store.setTarget(args.node.id);
     args.arr.splice(args.index, 1);
+  },
+
+  targetLastChildOfNode(node) {
+    /* 
+      targets last child of specified node
+    */
+    document.getElementById(node.children[node.children.length - 1].id).focus();
   },
 };

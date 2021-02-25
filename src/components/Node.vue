@@ -38,8 +38,8 @@
         <Node
           v-bind:node="child"
           v-bind:index="childIndex"
-          v-bind:arr="node.children"
-          v-bind:parentArray="arr"
+          v-bind:currentArray="node.children"
+          v-bind:parentArray="currentArray"
           v-bind:parentIndex="index"
           v-bind:parentId="node.id"
         />
@@ -63,7 +63,7 @@ export default {
   props: {
     node: Object, // current node
     index: Number, // node index
-    arr: Array, // array containing node
+    currentArray: Array, // array containing node
     parentArray: Array, // array containing parent
     parentIndex: Number, // parent index
     parentId: String, // Parent ID
@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     addNewNode(e) {
-      const { arr, index, parentId, store } = this;
+      const { currentArray, index, parentId, store } = this;
 
       // if length of current input is greater than 0 creates new node
       if (e.target.value.length > 0) {
@@ -131,21 +131,21 @@ export default {
         // sets focusId to target newly created node
         store.setTarget(newNode.id);
         // using splice to insert new node as next index in array
-        arr.splice(index + 1, 0, newNode);
+        currentArray.splice(index + 1, 0, newNode);
       }
     },
 
     removeNode(e) {
-      const { arr, index, parentArray } = this;
+      const { currentArray, index, parentArray } = this;
 
       // if current input length is less than 1 or "Delete" key is pressed removes node
       if (
         (e.target.value.length < 1 || e.key === 'Delete') &&
-        (parentArray || (!parentArray && arr.length > 1))
+        (parentArray || (!parentArray && currentArray.length > 1))
       ) {
         e.preventDefault();
         if (e.key === 'Delete') {
-          arr.splice(index, 1);
+          currentArray.splice(index, 1);
         }
         if (e.key === 'Delete' || e.key === 'Backspace') {
           this.handleUp(e);
@@ -156,8 +156,8 @@ export default {
     handleUp(e) {
       e.preventDefault();
 
-      const { index, arr, parentId, node } = this;
-      const nodeUp = arr[index - 1];
+      const { index, currentArray, parentId, node } = this;
+      const nodeUp = currentArray[index - 1];
 
       // if there is a node above current node with no children target that node
       if (nodeUp && nodeUp.children.length === 0) {
@@ -171,10 +171,7 @@ export default {
         nodeUp.children.length > 0 &&
         nodeUp.children[nodeUp.children.length - 1].children.length === 0
       ) {
-        document
-          .getElementById(nodeUp.children[nodeUp.children.length - 1].id)
-          .focus();
-
+        DomHelpers.targetLastChildOfNode(nodeUp);
         return;
       }
 
@@ -184,19 +181,19 @@ export default {
         return;
       }
 
-      // if there is a node above with deeply nested children traverse DOM for next input
+      // if there is a node above with deeply nested children search DOM for next input
       if (
         nodeUp &&
         nodeUp.children[nodeUp.children.length - 1].children.length > 0
       ) {
-        DomHelpers.SearchForNextNodeUp(node.id);
+        DomHelpers.searchForNextNodeUp(node.id);
       }
     },
 
     handleDown(e) {
       e.preventDefault();
 
-      const { node, arr, index, parentIndex, parentArray } = this;
+      const { node, currentArray, index, parentIndex, parentArray } = this;
       const { children } = node;
 
       // if length of children is greater than 0, target first child
@@ -206,8 +203,8 @@ export default {
       }
 
       // if no children and there is a node below, target next node
-      if (children.length === 0 && arr.length > index + 1) {
-        document.getElementById(arr[index + 1].id).focus();
+      if (children.length === 0 && currentArray.length > index + 1) {
+        document.getElementById(currentArray[index + 1].id).focus();
         return;
       }
 
@@ -233,14 +230,14 @@ export default {
         parentIndex !== null &&
         !parentArray[parentIndex + 1]
       ) {
-        DomHelpers.SearchForNextNodeDown(node.id);
+        DomHelpers.searchForNextNodeDown(node.id);
       }
     },
 
     handleTab(e) {
       e.preventDefault();
-      const { arr, index } = this;
-      const nodeAbove = arr[index - 1];
+      const { currentArray, index } = this;
+      const nodeAbove = currentArray[index - 1];
 
       /*
         If sibling node above push current node into node above children and remove current node
@@ -265,13 +262,15 @@ export default {
     onBlur(e) {
       // removes node if value is less than 1 and it is not the only node in the editor
       // will not remove node if it has children, user can press delete to delete a node and it's children
-      const { parentArray, arr, node } = this;
+      const { parentArray, currentArray, node } = this;
       if (
         ((e.target.value.length < 1 && parentArray) ||
-          (e.target.value.length < 1 && arr.length > 1 && !parentArray)) &&
+          (e.target.value.length < 1 &&
+            currentArray.length > 1 &&
+            !parentArray)) &&
         node.children.length === 0
       ) {
-        arr.splice(this.index, 1);
+        currentArray.splice(this.index, 1); // removes current node from currentArray
       }
     },
   },
