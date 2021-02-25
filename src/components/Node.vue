@@ -40,9 +40,9 @@
           v-bind:node="child"
           v-bind:index="childIndex"
           v-bind:arr="node.children"
-          v-bind:parArr="arr"
-          v-bind:parIndex="index"
-          v-bind:parId="node.id"
+          v-bind:parentArray="arr"
+          v-bind:parentIndex="index"
+          v-bind:parentId="node.id"
         />
       </li>
     </draggable>
@@ -64,9 +64,9 @@ export default {
     node: Object, // current node
     index: Number, // node index
     arr: Array, // array containing node
-    parArr: Array, // array containing parent
-    parIndex: Number, // parent index
-    parId: String, // Parent ID
+    parentArray: Array, // array containing parent
+    parentIndex: Number, // parent index
+    parentId: String, // Parent ID
   },
   data: () => ({
     store, // global store
@@ -95,10 +95,10 @@ export default {
       },
     },
 
-    parId: {
+    parentId: {
       immediate: true,
       handler() {
-        this.node.parent = this.parId;
+        this.node.parent = this.parentId;
       },
     },
   },
@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     addNewNode(e) {
-      const { arr, index, parId, store } = this;
+      const { arr, index, parentId, store } = this;
 
       // if length of current input is greater than 0 creates new node
       if (e.target.value.length > 0) {
@@ -124,7 +124,7 @@ export default {
           text: '',
           type: 'CONCEPT',
           concepts: [],
-          parent: parId,
+          parent: parentId,
           children: [],
         };
 
@@ -136,12 +136,12 @@ export default {
     },
 
     removeNode(e) {
-      const { arr, index, parArr } = this;
+      const { arr, index, parentArray } = this;
 
       // if current input length is less than 1 or "Delete" key is pressed removes node
       if (
         (e.target.value.length < 1 || e.key === 'Delete') &&
-        (parArr || (!parArr && arr.length > 1))
+        (parentArray || (!parentArray && arr.length > 1))
       ) {
         e.preventDefault();
         if (e.key === 'Delete') {
@@ -156,7 +156,7 @@ export default {
     handleUp(e) {
       e.preventDefault();
 
-      const { index, arr, parId, node } = this;
+      const { index, arr, parentId, node } = this;
       const nodeUp = arr[index - 1];
 
       // if there is a node above current node with no children target that node
@@ -179,8 +179,8 @@ export default {
       }
 
       // if current node is a child and it does not have a sibling node above, target parent
-      if (!nodeUp && parId) {
-        document.getElementById(parId).focus();
+      if (!nodeUp && parentId) {
+        document.getElementById(parentId).focus();
         return;
       }
 
@@ -201,7 +201,7 @@ export default {
     handleDown(e) {
       e.preventDefault();
 
-      const { node, arr, index, parIndex, parArr } = this;
+      const { node, arr, index, parentIndex, parentArray } = this;
       const { children } = node;
 
       // if length of children is greater than 0, target first child
@@ -222,10 +222,10 @@ export default {
       */
       if (
         children.length === 0 &&
-        parIndex !== null &&
-        parArr.length > parIndex + 1
+        parentIndex !== null &&
+        parentArray.length > parentIndex + 1
       ) {
-        document.getElementById(parArr[parIndex + 1].id).focus();
+        document.getElementById(parentArray[parentIndex + 1].id).focus();
         return;
       }
 
@@ -233,7 +233,11 @@ export default {
         if node is a child with no children and it's parent does not have a sibling
         search DOM for next input
       */
-      if (children.length === 0 && parIndex !== null && !parArr[parIndex + 1]) {
+      if (
+        children.length === 0 &&
+        parentIndex !== null &&
+        !parentArray[parentIndex + 1]
+      ) {
         const inputs = document.getElementsByClassName('nodeInput');
         for (let i = 0, il = inputs.length; i < il; i++) {
           if (inputs[i].id === node.id) {
@@ -262,12 +266,12 @@ export default {
     handleShiftTab(e) {
       e.preventDefault();
 
-      const { parArr, arr, node, parIndex, index, store } = this;
+      const { parentArray, arr, node, parentIndex, index, store } = this;
       /*
         if node is a child insert it as next sibling to parent
       */
-      if (parArr) {
-        parArr.splice(parIndex + 1, 0, node);
+      if (parentArray) {
+        parentArray.splice(parentIndex + 1, 0, node);
         document.getElementById(node.id).id = 'clear';
         store.setTarget(node.id);
         arr.splice(index, 1);
@@ -277,10 +281,10 @@ export default {
     onBlur(e) {
       // removes node if value is less than 1 and it is not the only node in the editor
       // will not remove node if it has children, user can press delete to delete a node and it's children
-      const { parArr, arr, node } = this;
+      const { parentArray, arr, node } = this;
       if (
-        ((e.target.value.length < 1 && parArr) ||
-          (e.target.value.length < 1 && arr.length > 1 && !parArr)) &&
+        ((e.target.value.length < 1 && parentArray) ||
+          (e.target.value.length < 1 && arr.length > 1 && !parentArray)) &&
         node.children.length === 0
       ) {
         arr.splice(this.index, 1);
