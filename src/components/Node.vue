@@ -28,7 +28,6 @@
       class="childContainer"
       tag="ul"
       @change="focusId = null"
-      v-if="collapsed"
     >
       <li
         v-for="(child, childIndex) in node.children"
@@ -54,6 +53,7 @@
 import draggable from 'vuedraggable';
 import store from '../../store';
 import { v4 as uuid } from 'uuid';
+import DomHelpers from '../utils/DomHelpers';
 
 export default {
   name: 'Node',
@@ -189,12 +189,7 @@ export default {
         nodeUp &&
         nodeUp.children[nodeUp.children.length - 1].children.length > 0
       ) {
-        const inputs = document.getElementsByClassName('nodeInput');
-        for (let i = 0, il = inputs.length; i < il; i++) {
-          if (inputs[i].id === node.id) {
-            document.getElementById(inputs[i - 1].id).focus();
-          }
-        }
+        DomHelpers.SearchForNextNodeUp(node.id);
       }
     },
 
@@ -238,13 +233,7 @@ export default {
         parentIndex !== null &&
         !parentArray[parentIndex + 1]
       ) {
-        const inputs = document.getElementsByClassName('nodeInput');
-        for (let i = 0, il = inputs.length; i < il; i++) {
-          if (inputs[i].id === node.id) {
-            document.getElementById(inputs[i + 1].id).focus();
-            return;
-          }
-        }
+        DomHelpers.SearchForNextNodeDown(node.id);
       }
     },
 
