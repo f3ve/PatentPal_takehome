@@ -1,3 +1,8 @@
+<!-- 
+  Floating action button to insert and remove demo data from editor.
+  Rendered in src/views/draft.vue
+-->
+
 <template>
   <button class="fab" @click="handleClick">
     {{ text }}

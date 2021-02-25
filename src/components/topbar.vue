@@ -1,3 +1,5 @@
+<!-- Top bar component, handles navigation. Rendered in src/App.vue -->
+
 <template>
   <header :class="scrolled ? 'topbar scrolled' : 'topbar'">
     <router-link to="/">

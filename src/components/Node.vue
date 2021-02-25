@@ -1,3 +1,5 @@
+<!-- This Renders the editable nodes on the draft page -->
+
 <template>
   <span>
     <!-- Icon and Input -->
@@ -26,6 +28,7 @@
       class="childContainer"
       tag="ul"
       @change="focusId = null"
+      v-if="collapsed"
     >
       <li
         v-for="(child, childIndex) in node.children"
@@ -67,11 +70,12 @@ export default {
   },
   data: () => ({
     store, // global store
+    collapsed: false, // boolean describing if node is collapsed or not.
   }),
   mounted: function() {
     const { store } = this;
 
-    // if target is not null focus it
+    // if target is not null focus it.
     if (store.target !== null) {
       document.getElementById(this.store.target).focus();
       store.clearTarget();

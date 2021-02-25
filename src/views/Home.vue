@@ -1,3 +1,7 @@
+<!-- 
+  Main landing page
+-->
+
 <template>
   <div class="home">
     <main class="homeMain">

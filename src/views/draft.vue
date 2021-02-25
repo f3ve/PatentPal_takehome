@@ -1,3 +1,7 @@
+<!-- 
+  Draft page, user can edit a graph and preview JSON data.
+-->
+
 <template>
   <main class="main">
     <!-- Graph Editor -->

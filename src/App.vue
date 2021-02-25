@@ -1,3 +1,8 @@
+<!-- 
+  Acts as root component, renders router-view for navigation and renders any 
+  universal components such as the top bar.
+-->
+
 <template>
   <div id="app">
     <topbar />
