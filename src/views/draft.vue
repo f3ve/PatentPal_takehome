@@ -22,7 +22,7 @@
           <Node
             v-bind:node="node"
             v-bind:index="nodeIndex"
-            v-bind:arr="store.nodes"
+            v-bind:currentArray="store.nodes"
           />
         </li>
       </draggable>

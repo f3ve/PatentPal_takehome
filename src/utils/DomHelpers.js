@@ -37,8 +37,8 @@ export default {
     */
     args.parentArray.splice(args.parentIndex + 1, 0, args.node);
     document.getElementById(args.node.id).id = 'clear';
+    args.currentArray.splice(args.index, 1);
     args.store.setTarget(args.node.id);
-    args.arr.splice(args.index, 1);
   },
 
   tabForward(args, nodeAbove) {
@@ -48,7 +48,7 @@ export default {
     */
     nodeAbove.children.push(args.node);
     args.store.setTarget(args.node.id);
-    args.arr.splice(args.index, 1);
+    args.currentArray.splice(args.index, 1);
   },
 
   targetLastChildOfNode(node) {

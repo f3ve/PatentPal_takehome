@@ -117,6 +117,8 @@ export default {
     addNewNode(e) {
       const { currentArray, index, parentId, store } = this;
 
+      console.log(currentArray);
+
       // if length of current input is greater than 0 creates new node
       if (e.target.value.length > 0) {
         const newNode = {
